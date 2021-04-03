@@ -1,15 +1,19 @@
-class Object3D:
-    """
-    Abstract class that represents all 3d objects. These can be simple objects like Cubes and Spheres, or can be more complex objects that use a sketch and a length to extrude.
-    """
+class Object2D:
 
-    def __init__(self):
-        self.object_type = None
-        self.properties = ['sketch', 'extrude_level']
-        self.properties = {elem : None for elem in self.properties}
+    def __init__(self) -> None:
+        self.object_2d_name = None
+        self.surface = None
+        self.properties = {}
 
+    def draw_on_sketch(self, sketch): # surface is a plane or other surface where we can create a sketch
+        print('The draw_on_sketch needs to be implemented in' + self.object_2d_name)
+    
     def get_needed_properties(self):
         needed_properties = [elem for elem in self.properties if self.properties[elem] is None]
+        if self.object_2d_name is None:
+            raise Exception('This Object2D subclass needs a name')
+        if self.surface is None:
+            needed_properties.append('surface')
         return needed_properties # list of strings
     
     def to_string_display(self):

@@ -8,7 +8,8 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "./Source/gui.py",
+            // "program": "./Source/gui.py",
+            "program": "${file}",
             "console": "integratedTerminal"
         }
     ]
