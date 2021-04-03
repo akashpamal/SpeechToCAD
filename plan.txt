@@ -1,0 +1,55 @@
+
+Speech --> STL
+Preserve Scale
+
+
+Speech to Text:
+    - Very simple GUI with a button for record
+    - https://github.com/spatialaudio/python-sounddevice/blob/master/sounddevice.py
+    - 
+        - record()
+        - 
+
+
+
+Text to Information:
+    - takes in text and makes a list of 2DShapes
+    - extract information needed for each 3D part
+
+    
+
+Information Format:
+    - Dictionary of properties
+    - Each Sketch knows its measurements (radius, side length, etc.) and surface
+    - Each 3dObject knows a sketch and an extrude level OR it knows a simple object type (sphere, box, etc.)
+    - Object3D class
+        - simple object type
+        - measurements for that object
+        - toString
+
+    - Class System
+        - Objects
+            - Rectangular Prism has a subclass of Cube
+                - Width
+                - Height
+                - Length
+            - Sphere
+                - Diameter
+                - radius
+            - Cylinder
+                - Width 
+                - Height
+        - Modifiers
+            - 
+
+
+Information to CAD file:
+# convert each object from our internal format to a Fusion model
+
+
+
+Sources Cited:
+
+https://forums.autodesk.com/t5/fusion-360-api-and-scripts/simple-python-example-request/td-p/5428202
+https://github.com/brysontyrrell/Python-GUI-Example/blob/master/Python-GUI-Example.py 
+https://www.autodesk.com/autodesk-university/class/Getting-Started-Fusion-360-API-2020#handout
