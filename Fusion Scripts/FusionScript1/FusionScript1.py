@@ -1,7 +1,7 @@
 #Author-
 #Description-
-
-import adsk.core, adsk.fusion, traceback
+# from ./Users/akashpamal/Library/Application Support/Autodesk/Autodesk Fusion 360/API/Python/defs
+# import adsk.core, adsk.fusion, traceback
 
 def main():
     ui = None
@@ -38,7 +38,7 @@ def main():
         while i < len(coordinates)-3:
             point1 = adsk.core.Point3D.create(coordinates[i], coordinates[i+1], coordinates[i+2])
             point2 = adsk.core.Point3D.create(coordinates[i+3], coordinates[i+4], coordinates[i+5])
-            adsk.core.BoundingBox3D.create()
+            # adsk.core.BoundingBox3D.create()
             #Create Line
             lines.addByTwoPoints(point1, point2)
             i += 3
