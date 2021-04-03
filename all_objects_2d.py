@@ -1,4 +1,4 @@
-from object_2d import Object2D
+from Source.Object_Heirarchy.object_2d import Object2D
 
 
 class Rectangle(Object2D):

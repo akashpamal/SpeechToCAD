@@ -4,9 +4,6 @@ class Object2D:
         self.object_2d_name = None
         self.surface = None
         self.properties = {}
-
-    def draw_on_sketch(self, sketch): # surface is a plane or other surface where we can create a sketch
-        print('The draw_on_sketch needs to be implemented in' + self.object_2d_name)
     
     def get_needed_properties(self):
         needed_properties = [elem for elem in self.properties if self.properties[elem] is None]
@@ -29,3 +26,5 @@ class Object2D:
         """
         return 'The to_string_fusion method needs to be implemented in class:' + self.object_type
     
+    def set_prop(self, property_name, value):
+        self.properties[property_name] = value

@@ -17,19 +17,22 @@ def run(context):
         rootComp = design.rootComponent
 
         # Create a new sketch on the xy plane.
-        sketches = rootComp.sketches;
-        xyPlane = rootComp.xYConstructionPlane;
-        sketch = sketches.add(xyPlane)
+        sketch = rootComp.sketches.add(rootComp.xYConstructionPlane)
+
 
         #rectangle creation
         lines = sketch.sketchCurves.sketchLines
-        width = 8
-        height = 2
-        rec1 = lines.addTwoPointRectangle(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create(width, height, z))
+        rec1 = lines.addTwoPointRectangle(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create(8, 2, 0))
 
-        #rectangle extrusion
-        length = 
+        ui.messageBox('hi:\n{}'.format(traceback.format_exc()))
+        ui.messageBox(sketch.profiles.format(traceback.format_exc()))
+        # print(sketch.profiles)
         
+        """
+        #rectangle extrusion
+        extrudeDistance = adsk.core.ValueInput.createByReal(8)
+        #extrude = rootComp.features.extrudeFeatures.addSimple()
+        """
 
     except:
         if ui:

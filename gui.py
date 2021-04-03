@@ -53,7 +53,6 @@ class Application:
         quit()
         
     def Record(self):
-        self.current_text.highlight_pattern("this should be red", "red")
         print("The user clicked the 'Record' button.")
        
     def update(self, b = None):
