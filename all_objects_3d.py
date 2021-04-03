@@ -1,7 +1,4 @@
-# from Source.Object_Heirarchy import object_3d
-# import object_3d
-from Source.Object_Heirarchy.object_3d import Object3D
-
+from object_3d import Object3D
 
 class Sphere(Object3D):
     

@@ -1,5 +1,4 @@
-from Source.Object_Heirarchy.object_2d import Object2D
-
+from object_2d import Object2D
 
 class Rectangle(Object2D):
     def __init__(self, width=None, height=None):
@@ -8,5 +7,5 @@ class Rectangle(Object2D):
         self.properties = {'width' : width, 'height' : height}
     
     def to_string_fusion(self):
-        return_string = f"rec1 = lines.addTwoPointRectangle(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create({self.width}, {self.height}, 0))"
+        return_string = f"rec1 = sketch.sketchCurves.sketchLines.addTwoPointRectangle(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create({self.properties['width']}, {self.properties['height']}, 0))"
         return return_string
