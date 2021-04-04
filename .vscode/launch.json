@@ -1,17 +1,17 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "Python: Attach",
             "type": "python",
-            "request": "launch",
-            // "program": "test.py",
-            // "program": "fusion_script_generator.py",
-            "program": "${file}",
-            "console": "integratedTerminal"
+            "request": "attach",
+            "pathMappings": [  {
+                "localRoot": "${workspaceRoot}",
+                "remoteRoot": "${workspaceRoot}"}],
+            "osx": {"filePath":"${file}"},
+            "windows": {"filePath":"${file}"},
+            "port": 9000,
+            "host": "localhost"
         }
     ]
 }
