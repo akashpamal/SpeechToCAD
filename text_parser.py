@@ -47,7 +47,6 @@ class TextParser():
         pre_processed_text = [elem.lower() for elem in pre_processed_text]
         return pre_processed_text
 
-
 if __name__ == '__main__':
     text_parser = TextParser()
     created_object_list = text_parser.text_to_objects('Make a sphere with 2 cm diameter and a cube with a side length of 3')
