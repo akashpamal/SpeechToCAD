@@ -46,7 +46,7 @@ class PrimitiveObject3D:
         return len(self.get_needed_properties()) == 0
     
     def __str__(self) -> str:
-        return_string = self.object_type + ', '.join([elem[0] + ': ' + str(elem[1]) for elem in self.properties.items()])
+        return_string = self.object_type[0].upper() + self.object_type[1 : ].lower() + ' || ' + ', '.join([elem[0] + ': ' + str(elem[1]) for elem in self.properties.items()])
         return return_string
 
     def to_string_fusion(self):

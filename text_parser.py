@@ -77,7 +77,7 @@ class TextParser():
 
 if __name__ == '__main__':
     text_parser = TextParser()
-    created_object_list = text_parser.text_to_objects('Make a sphere with 20 cm radius')
+    created_object_list = text_parser.text_to_objects('Make a cylinder with 20 cm diameter and a height of 40 cm')
     [print(str(elem)) for elem in created_object_list]
 
     fusion_script_generator = FusionScriptGenerator('./Fusion Scripts/FusionScript1/FusionScript1.py')

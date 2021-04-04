@@ -58,4 +58,3 @@ https://www.autodesk.com/autodesk-university/class/Getting-Started-Fusion-360-AP
 TODO:
     - Export STL from fusion
     - Get STL viewer working in the GUI
-    - Polish GUI

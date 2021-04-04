@@ -15,15 +15,10 @@ def run(context):
         # Create a new sketch on the xy plane.
 
         sketch = rootComp.sketches.add(rootComp.xYConstructionPlane)
-        circles = sketch.sketchCurves.sketchCircles.addByCenterRadius(adsk.core.Point3D.create(0, 0, 0), 20)
+        rec1 = sketch.sketchCurves.sketchLines.addTwoPointRectangle(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create(5, 5, 0))
+        # DRAWING A CUBE
+        extrude = rootComp.features.extrudeFeatures.addSimple(sketch.profiles[-1], adsk.core.ValueInput.createByReal(5), adsk.fusion.FeatureOperations.NewBodyFeatureOperation)
 
-        # DRAWWING A SPHERE
-        axisLine = sketch.sketchCurves.sketchLines.addByTwoPoints(adsk.core.Point3D.create(-1 * 20, 0, 0), adsk.core.Point3D.create(20, 0, 0))
-        revolves = rootComp.features.revolveFeatures
-        revInput = revolves.createInput(sketch.profiles[-1], axisLine, adsk.fusion.FeatureOperations.NewComponentFeatureOperation)
-        revInput.setAngleExtent(False, adsk.core.ValueInput.createByReal(2 * math.pi))
-        ext = revolves.add(revInput)
-        
         """
         Do not delete this section – it's used for parsing
         """

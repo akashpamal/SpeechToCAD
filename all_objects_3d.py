@@ -37,6 +37,15 @@ class Cylinder(PrimitiveObject3D):
         super().__init__()
         self.object_type = 'cylinder'
         self.properties.update({'radius' : radius, 'height' : height})
+        self.alternative_properties.update({'diameter'})
+
+    def set_prop(self, property_name, value):
+        if property_name in self.alternative_properties:
+            if property_name == 'diameter':
+                self.set_prop('radius', value / 2)
+                return
+        # function in the super class handles values that are in self.properties
+        return super().set_prop(property_name, value)
 
     def to_string_fusion(self):
         # Make a new circle with radius "radius"
@@ -52,6 +61,15 @@ class Cube(PrimitiveObject3D):
         super().__init__()
         self.object_type = 'cube'
         self.properties.update({'side_length' : side_length})
+        self.alternative_properties.update({'length'})
+    
+    def set_prop(self, property_name, value):
+        if property_name in self.alternative_properties:
+            if property_name == 'length':
+                self.set_prop('side_length', value)
+                return
+        # function in the super class handles values that are in self.properties
+        return super().set_prop(property_name, value)
 
     def to_string_fusion(self):
         square = Square(side_length=self.get_prop('side_length'))
