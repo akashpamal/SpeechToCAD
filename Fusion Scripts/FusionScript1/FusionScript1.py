@@ -15,9 +15,24 @@ def run(context):
         # Create a new sketch on the xy plane.
 
         sketch = rootComp.sketches.add(rootComp.xYConstructionPlane)
-        rec1 = sketch.sketchCurves.sketchLines.addTwoPointRectangle(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create(10, 10, 0))
+        rec1 = sketch.sketchCurves.sketchLines.addTwoPointRectangle(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create(8, 8, 0))
         # DRAWING A CUBE
-        extrude = rootComp.features.extrudeFeatures.addSimple(sketch.profiles[-1], adsk.core.ValueInput.createByReal(10), adsk.fusion.FeatureOperations.NewBodyFeatureOperation)
+        extrude = rootComp.features.extrudeFeatures.addSimple(sketch.profiles[-1], adsk.core.ValueInput.createByReal(8), adsk.fusion.FeatureOperations.NewBodyFeatureOperation)
+
+        sketch = rootComp.sketches.add(rootComp.xYConstructionPlane)
+        circles = sketch.sketchCurves.sketchCircles.addByCenterRadius(adsk.core.Point3D.create(0, 0, 0), 4)
+
+        # DRAWWING A SPHERE
+        axisLine = sketch.sketchCurves.sketchLines.addByTwoPoints(adsk.core.Point3D.create(-1 * 4, 0, 0), adsk.core.Point3D.create(4, 0, 0))
+        revolves = rootComp.features.revolveFeatures
+        revInput = revolves.createInput(sketch.profiles[-1], axisLine, adsk.fusion.FeatureOperations.NewComponentFeatureOperation)
+        revInput.setAngleExtent(False, adsk.core.ValueInput.createByReal(2 * math.pi))
+        ext = revolves.add(revInput)
+        
+        sketch = rootComp.sketches.add(rootComp.xYConstructionPlane)
+        circles = sketch.sketchCurves.sketchCircles.addByCenterRadius(adsk.core.Point3D.create(0, 0, 0), 2.0)
+        # DRAWING A CYLINDER
+        extrude = rootComp.features.extrudeFeatures.addSimple(sketch.profiles[-1], adsk.core.ValueInput.createByReal(15), adsk.fusion.FeatureOperations.NewBodyFeatureOperation)
 
         """
         Do not delete this section – it's used for parsing
