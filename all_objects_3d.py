@@ -36,7 +36,7 @@ class Cylinder(PrimitiveObject3D):
     def __init__(self, radius=None, height=None):
         super().__init__()
         self.object_type = 'cylinder'
-        self.properties.update({'radius' : radius, 'height' : height})
+        self.properties.update({'radius' : radius, 'height' : height, 'sketch_plane' : 'rootComp.xYConstructionPlane'})
         self.alternative_properties.update({'diameter'})
 
     def set_prop(self, property_name, value):
@@ -73,6 +73,7 @@ class Cube(PrimitiveObject3D):
 
     def to_string_fusion(self):
         square = Square(side_length=self.get_prop('side_length'))
+        # square.set_prop('sketch_profile' : )
         part1 = square.to_string_fusion()
         # Extrude the circle by height "height"
         part2 = f"# DRAWING A CUBE\n        extrude = rootComp.features.extrudeFeatures.addSimple(sketch.profiles[-1], adsk.core.ValueInput.createByReal({self.get_prop('side_length')}), adsk.fusion.FeatureOperations.NewBodyFeatureOperation)\n"

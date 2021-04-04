@@ -22,7 +22,7 @@ class FusionScriptGenerator():
         self.sketches = ['sketch']
 
         with open(self.filename, 'w') as target_file:
-            with open('./SpeechToCAD/Fusion Scripts/FusionScriptShell/FusionScriptShell.py') as source_file:
+            with open('./Fusion Scripts/FusionScriptShell/FusionScriptShell.py') as source_file:
                 source_lines = source_file.readlines()
                 line_divider = [index for index, elem in enumerate(source_lines) if '"""' in elem][0]
                 target_file.write(''.join(source_lines[ : line_divider]))
@@ -35,21 +35,18 @@ class FusionScriptGenerator():
     def close_generator(self):
         with open(self.filename, 'a') as target_file:
             target_file.write(self._closing_lines)
-            
-    def add_save(self):
         with open(self.filename, 'a') as target_file:
             target_file.write(self._saving_lines)
 
-if __name__ == '__name__':
-    print('starting run of generator')
-    print('running the script generator')
+if __name__ == '__main__':
     fusion_script_generator = FusionScriptGenerator('./Fusion Scripts/FusionScript1/FusionScript1.py')
-    fusion_script_generator.add_object(Sphere(radius=2))
-    fusion_script_generator.add_object(Cylinder(radius=1, height=20))
+    # fusion_script_generator.add_object(Sphere(radius=2))
+    # fusion_script_generator.add_object(Cylinder(radius=1, height=20))
     fusion_script_generator.add_object(Cube(side_length=10))
+    cylinder = Cylinder(radius=1, height=5)
+    cylinder.set_prop('sketch_plane', """try:
+            face = ui.selectEntity('Select Face', 'PlanarFaces')
+        except:
+            return""")
     # fusion_script_generator.add_object(Rectangle(width=10, height=20))
     fusion_script_generator.close_generator()
-    fusion_script_generator.add_save()
-    print('finished saving file')
-
-print('hello there')

@@ -5,8 +5,9 @@ from text_parser import TextParser
 from fusion_script_generator import FusionScriptGenerator
 import tkinter as tk
 import tkinter.filedialog
+from PIL import ImageTk, Image
 
-WIDTH = 1400
+WIDTH = 1560
 HEIGHT = 800
 
 WHITE = "#FFFFFF"
@@ -32,43 +33,44 @@ class Application:
         
         
         record = tk.Frame(self.display, bg=DARK_GREY)
-        record.grid(row = 0, column = 0)
+        record.grid(row = 0, column = 0, sticky="n")
         tk.Label(record, text="Audio Recording", height=header_height, bg=RED, fg=WHITE, font=("Karla", 22, 'bold'), width = 33).grid(row = 1, column = 0)
         tk.Label(record, text="Welcome to our fully automatic speach to STL file generator. To begin, please click on the record button and describe a simple shape for the system to generate!", bg=DARK_GREY, fg=WHITE, font=("Karla", 17), wraplength=400, pady = 15).grid(row = 2, column = 0)
         
-        tk.Label(record, text="Open a .WAV filetype", height=header_height, bg=DARK_GREY_2, fg=WHITE, font=("Karla", 18, 'bold'), width = 25, pady=5).grid(row = 3, column = 0)
-        tk.Button(record, text="Open File", highlightbackground = DARK_GREY, bg=DARK_GREY_2,command = self.open_file, font=("Karla", 18)).grid(row = 4, column = 0, pady = 5)
+        tk.Label(record, text="Open a .WAV filetype", height=header_height, bg=DARK_GREY_2, fg=WHITE, font=("Karla", 18, 'bold'), width = 25, pady=10).grid(row = 3, column = 0)
+        tk.Button(record, text="Open File", highlightbackground = DARK_GREY, bg=DARK_GREY_2,command = self.open_file, font=("Karla", 18), pady=10).grid(row = 4, column = 0, pady = 5)
         
-        tk.Label(record, text="Read Audio from Microphone", height=header_height, bg=DARK_GREY_2, fg=WHITE, font=("Karla", 18, 'bold'), width = 25, pady=5).grid(row = 5, column = 0)
+        tk.Label(record, text="Read Audio from Microphone", height=header_height, bg=DARK_GREY_2, fg=WHITE, font=("Karla", 18, 'bold'), width = 25, pady=10).grid(row = 5, column = 0)
         options = sr.Microphone.list_microphone_names()
         self.variable = tk.StringVar(self.display)
         self.variable.set(options[1]) # default value
-        tk.OptionMenu(record, self.variable, *options).grid(row = 6, column = 0, pady = (5, 5))
+        tk.OptionMenu(record, self.variable, *options).grid(row = 6, column = 0, pady = 10)
         self.mic = self.create_audio_dropdown(record)
-        tk.Button(record, text="Record", highlightbackground = DARK_GREY, fg=DARK_GREY_2, command = self.refresh_info, font=("Karla", 18)).grid(row = 7, column = 0, pady = 5)
-        tk.Button(record, text="Exit", highlightbackground = DARK_GREY, fg=RED, command = self.exit, font=("Karla", 18)).grid(row = 8, column = 0, pady = 10)
+        tk.Button(record, text="Record", highlightbackground = DARK_GREY, fg=DARK_GREY_2, command = self.refresh_info, font=("Karla", 18), pady=5).grid(row = 7, column = 0, pady = 5)
+        tk.Button(record, text="Exit", highlightbackground = DARK_GREY, fg=RED, command = self.exit, font=("Karla", 18), pady=5).grid(row = 8, column = 0, pady = 10)
+        tk.Label(record, text="", bg=DARK_GREY, fg=WHITE, font=("Karla", 17), wraplength=400, height = 60).grid(row = 9, column = 0)
         
         
         stt = tk.Frame(self.display, bg=DARK_GREY_2)
-        stt.grid(row = 0, column = 1)
+        stt.grid(row = 0, column = 1, sticky="n")
         tk.Label(stt, text="Text Parsing", height=header_height, bg=GREEN, fg=WHITE, font=("Karla", 22, 'bold'), width = 33).grid(row = 1, column = 1)
-        tk.Label(stt, text="Below is the raw text heard by the STL software. An intelligent parsing algorithm will then search this text for useful terms.", bg=DARK_GREY_2, fg=WHITE, font=("Karla", 17), wraplength=400, pady = 15).grid(row = 2, column = 1)
+        tk.Label(stt, text="Below is the raw text heard by the Speach-to-text software. An intelligent parsing algorithm will then search this text for useful terms.", bg=DARK_GREY_2, fg=WHITE, font=("Karla", 17), wraplength=400, pady = 15).grid(row = 2, column = 1)
         self.current_text = tk.Text(stt, width = 32, height = 15, bg=DARK_GREY_2, highlightbackground = DARK_GREY, fg=DARKER_WHITE, highlightcolor = "#7BAEDC", wrap = tk.WORD, font=("Karla", 16), pady=5)
         self.current_text.grid(row = 3, column = 1, padx = 1)
         tk.Button(stt, text="Update Parsing", highlightbackground = DARK_GREY, bg=DARK_GREY_2, command = self.refresh, font=("Karla", 18)).grid(row = 4, column = 1, pady = 10)
         self.final_info = tk.Text(stt, width = 32, height = 10, bg=DARK_GREY_2, highlightbackground = DARK_GREY, fg=DARKER_WHITE, highlightcolor = "#7BAEDC", wrap = tk.WORD, font=("Karla", 16), pady=10)
         self.final_info.grid(row = 5, column = 1, padx = 1)
-        
+        tk.Label(stt, text="", bg=DARK_GREY, fg=WHITE, font=("Karla", 17), wraplength=400, height = 70).grid(row = 9, column = 1)
         
         view = tk.Frame(self.display, bg=DARK_GREY)
-        view.grid(row = 0, column = 2)
+        view.grid(row = 0, column = 2, sticky="n")
         tk.Label(view, text="STL Synthesization", height=header_height, bg=BLUE, fg=WHITE, font=("Karla", 22, 'bold'), width = 33).grid(row = 1, column = 2)
         tk.Label(view, text="Once the terms are found and organized, an STL file is generated by calling Fusion360 API methods.", bg=DARK_GREY, fg=WHITE, font=("Karla", 17), wraplength=400, pady = 15).grid(row = 2, column = 2)
         
-        img = tk.PhotoImage(file="./res/Fusion.gif")
-        label = tk.Label(record, image=img).grid(row = 3, column = 2)
-        tk.Label(view, text="Fusion360 will open in a new window...", bg=DARK_GREY, fg=WHITE, font=("Karla", 17), wraplength=400, pady = 15).grid(row = 4, column = 2)
-        
+        img = ImageTk.PhotoImage(Image.open("./res/Fusion.jpeg"))
+        tk.Label(view, image=img).grid(row = 3, column = 2)
+        tk.Label(view, text="Now head over to Fusion 360 to see your script in action!", bg=DARK_GREY, fg=WHITE, font=("Karla", 17), wraplength=400, pady=10).grid(row = 4, column = 2)
+        tk.Label(view, text="", bg=DARK_GREY, fg=WHITE, font=("Karla", 17), height = 75).grid(row = 100, column = 2)
         # The below code is a workaround that allows us to determine the window size in
         # pixels and then position the window wherever we want before drawing it.
         self.display.withdraw()
