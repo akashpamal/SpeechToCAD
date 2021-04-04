@@ -3,7 +3,7 @@ from object_2d import Object2D
 class Rectangle(Object2D):
     def __init__(self, width=None, height=None):
         super().__init__()
-        self.object_2d_name = 'Rectangle'
+        self.object_type = 'Rectangle'
         self.properties.update({'width' : width, 'height' : height})
     
     def to_string_fusion(self):
@@ -13,7 +13,7 @@ class Rectangle(Object2D):
 class Square(Object2D):
     def __init__(self, side_length=None):
         super().__init__()
-        self.object_2d_name = 'Square'
+        self.object_type = 'Square'
         self.properties.update({'side_length' : side_length})
 
     def to_string_fusion(self):
@@ -23,7 +23,7 @@ class Square(Object2D):
 class Circle(Object2D):
     def __init__(self, radius=None):
         super().__init__()
-        self.object_2d_name = 'Circle'
+        self.object_type = 'Circle'
         self.properties.update({'radius' : radius})
     
     def to_string_fusion(self): # remove this default eventually

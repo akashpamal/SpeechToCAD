@@ -1,7 +1,7 @@
 class Object2D:
 
     def __init__(self) -> None:
-        self.object_2d_name = None
+        self.object_type = None
         self.sketch_plane = None
         self.properties = {'sketch_plane' : 'sketch'}
     

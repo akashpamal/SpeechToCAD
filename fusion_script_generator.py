@@ -24,12 +24,12 @@ class FusionScriptGenerator():
     def close_generator(self):
         with open(self.filename, 'a') as target_file:
             target_file.write(self._closing_lines)
-       
-            
-print('running the script generator')
-fusion_script_generator = FusionScriptGenerator('./Fusion Scripts/FusionScript1/FusionScript1.py')
-fusion_script_generator.add_object(Sphere(radius=2))
-fusion_script_generator.add_object(Cylinder(radius=1, height=20))
-fusion_script_generator.add_object(Cube(side_length=10))
-# fusion_script_generator.add_object(Rectangle(width=10, height=20))
-fusion_script_generator.close_generator()
+
+if __name__ == '__name__':
+    print('running the script generator')
+    fusion_script_generator = FusionScriptGenerator('./Fusion Scripts/FusionScript1/FusionScript1.py')
+    fusion_script_generator.add_object(Sphere(radius=2))
+    fusion_script_generator.add_object(Cylinder(radius=1, height=20))
+    fusion_script_generator.add_object(Cube(side_length=10))
+    # fusion_script_generator.add_object(Rectangle(width=10, height=20))
+    fusion_script_generator.close_generator()

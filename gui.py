@@ -2,12 +2,18 @@ import tkinter as tk
 import pyttsx3
 import speech_recognition as sr
 
+from text_parser import TextParser 
+
 WHITE = "#FFFFFF"
 BLACK = "#000000"
 DARK_GREY = "#1C1C1C"
 
 class Application:
     def __init__(self):
+        self.parser = TextParser()
+        
+        
+        
         self.root = tk.Tk()
         self.root.call('wm', 'attributes', '.', '-topmost', True)
         self.root.title("Speech to CAD")
@@ -70,21 +76,29 @@ class Application:
         self.root.destroy()
         quit()
         
+    def refresh_info(self):
+        new_text = self.record()
+        self.set_text(new_text)
+        objects = self.parser.text_to_objects(new_text)
+        #self.sysnthezied_info
+        
     def record(self):
         print("Recording Audio from " + self.variable.get())
         self.recording = True
         r=sr.Recognizer()
         index = sr.Microphone.list_microphone_names().index(self.variable.get())
         mic = sr.Microphone(device_index=index)
-        with mic as source:
-            r.adjust_for_ambient_noise(source, duration=3)
+        audio_file = sr.AudioFile('./Audio Inputs/cylinder_audio.wav')
+        with audio_file as source:
+            #r.adjust_for_ambient_noise(source, duration=3)
             # r.energy_threshold()
             print("say anything : ")
-            audio = r.listen(source)
+            audio = r.listen(source, timeout=10.0)
             try:
                 text = r.recognize_google(audio)
                 print(text)
                 self.recording = False
+                # self.set_text(text)
                 return text
             except:
                 print("sorry, could not recognize")
@@ -100,17 +114,6 @@ class Application:
         engine = pyttsx3.init()
         engine.say(text) 
         engine.runAndWait()
-
-#SpeakText("hello bois we are really doing the NEHS in 2021 what a vieb yesoh esyes")
-      
-           
-class Processor:
-    def __init__(self, text):
-        self.text = text
-        
-    # def update(self, b = None):
-    #     print(
-
 
 if __name__=="__main__":
     Application()

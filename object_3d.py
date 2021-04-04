@@ -41,11 +41,11 @@ class PrimitiveObject3D:
         needed_properties = [elem for elem in self.properties if self.properties[elem] is None]
         return needed_properties # list of strings
     
-    def to_string_display(self):
-        """
-        Returns a string that can be used to display the object in a human-readable format.
-        """
-        return_string = self.object_type + ', '.join([elem for elem in self.properties.items()])
+    def is_complete(self):
+        return len(self.get_needed_properties()) == 0
+    
+    def __str__(self) -> str:
+        return_string = self.object_type + ', '.join([elem[0] + ': ' + str(elem[1]) for elem in self.properties.items()])
         return return_string
 
     def to_string_fusion(self):
@@ -59,6 +59,13 @@ class PrimitiveObject3D:
         if property_name not in self.properties:
             raise Exception(f'{property_name} is not a property of {self.object_2d_name}')
         self.properties[property_name] = value
+    
+    def set_next_prop(self, value):
+        for key in self.properties:
+            if self.properties[key] == None:
+                self.set_prop(key, value)
+                return None
+        raise Exception(f'Attempted to add more properties than {self.object_type} has.')
     
     def get_prop(self, property_name):
         if property_name not in self.properties:

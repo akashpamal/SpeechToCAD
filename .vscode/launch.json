@@ -8,8 +8,9 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "fusion_script_generator.py",
-            // "program": "${file}",
+            // "program": "test.py",
+            // "program": "fusion_script_generator.py",
+            "program": "${file}",
             "console": "integratedTerminal"
         }
     ]
