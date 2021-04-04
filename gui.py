@@ -1,68 +1,73 @@
-import tkinter as tk
 import pyttsx3
 import speech_recognition as sr
 
 from text_parser import TextParser 
+import tkinter as tk
+
+WIDTH = 1400
+HEIGHT = 800
 
 WHITE = "#FFFFFF"
+DARKER_WHITE = "#DDDDDD"
 BLACK = "#000000"
 DARK_GREY = "#1C1C1C"
+DARK_GREY_2 = "#101010"
+
+RED = "#DC143C"
+GREEN = "#00B300"
+BLUE = "#3792CB"
 
 class Application:
     def __init__(self):
+        self.display = tk.Tk() 
+        self.display.title("Speech to CAD Generator")
+        self.display.geometry(str(WIDTH) + "x" + str(HEIGHT) + "+0+0")
+        #self.display.call('wm', 'attributes', '.', '-topmost', True)
+        self.display.configure(bg=BLACK)
+        
         self.parser = TextParser()
-        
-        
-        
-        self.root = tk.Tk()
-        self.root.call('wm', 'attributes', '.', '-topmost', True)
-        self.root.title("Speech to CAD")
-        self.root.geometry("1280x718")
-        
-        self.root.configure(bg=BLACK)
-        
         header_height = 2
-        #self.speak("your mom a hoe")
-        
         self.recording = False
-        record = tk.Frame(self.root, bg=DARK_GREY, padx=1, height=30)
-        record.grid(row = 4, column = 1, pady = 1)
-        title = tk.Label(record, text="Audio Recording", height=header_height, bg="#DC143C", fg=WHITE, width=30, font=("Karla", 18)).grid(row = 1)
+        
+        
+        record = tk.Frame(self.display, bg=DARK_GREY)
+        record.grid(row = 0, column = 0)
+        
+        tk.Label(record, text="Audio Recording", height=header_height, bg=RED, fg=WHITE, font=("Karla", 22, 'bold'), width = 33).grid(row = 1, column = 0)
+        tk.Label(record, text="Welcome to our fully automatic speach to STL file generator. To begin, please click on the record button and describe a simple shape for the system to generate!", bg=DARK_GREY, fg=WHITE, font=("Karla", 17), wraplength=400, pady = 15).grid(row = 2, column = 0)
         
         options = sr.Microphone.list_microphone_names()
-        self.variable = tk.StringVar(self.root)
+        self.variable = tk.StringVar(self.display)
         self.variable.set(options[1]) # default value
-
-        w = tk.OptionMenu(record, self.variable, *options).grid(row = 3, pady = (5, 5))
-        
+        tk.OptionMenu(record, self.variable, *options).grid(row = 4, column = 0, pady = (5, 5))
         self.mic = self.create_audio_dropdown(record)
-        self.record = tk.Button(record, text="Record", highlightbackground = DARK_GREY, command = self.record, font=("Karla", 18)).grid(row = 2, pady = (5, 5))
-        self.exit = tk.Button(record, text="Exit", highlightbackground = DARK_GREY, command = self.exit, font=("Karla", 18)).grid(row = 4, pady = (5, 5))
-        #Indicator GIFs
-        #record.place(x = 1, y = 1, width=30, height=30)
+        tk.Button(record, text="Record", highlightbackground = DARK_GREY, command = self.refresh_info, font=("Karla", 18)).grid(row = 3, column = 0, pady = 5)
+        tk.Button(record, text="Exit", highlightbackground = DARK_GREY, command = self.exit, font=("Karla", 18)).grid(row = 5, column = 0, pady = 5)
         
-        stt = tk.Frame(self.root, bg=DARK_GREY, padx=1)
-        stt.grid(row = 4, column = 2, pady = 1)
-        title = tk.Label(stt, text="Text Parsing", height=header_height, bg="#00B300", width=35, fg=WHITE, font=("Karla", 18)).grid(row = 1)
-        self.current_text = tk.Text(stt, width = 30, height = 15, bg=BLACK, highlightbackground = DARK_GREY, fg=WHITE, highlightcolor = "#7BAEDC", wrap = tk.WORD, font=("Karla", 18), pady=5)
-        self.current_text.grid(row = 2, padx = 15)
-        self.refresh = tk.Button(stt, text="Update Parsing", highlightbackground = DARK_GREY, command = self.update, font=("Karla", 18)).grid(row = 3, pady = (5, 5))
-        self.sysnthezied_info = tk.Label(stt, text="Example translation", font=("Karla", 18)).grid(row = 4, padx = 10)
-        #stt.place(x = 33, y = 1, width=30, height=30)
         
-        view = tk.Frame(self.root, bg=DARK_GREY, padx=1)
-        view.grid(row = 3, column = 3, pady = 1)
-        title = tk.Label(view, text="STL Synthesization", height=header_height, bg="#3792CB", width=40, fg=WHITE, font=("Karla", 18)).grid(row = 1)
-        # View Module
+        stt = tk.Frame(self.display, bg=DARK_GREY_2)
+        stt.grid(row = 0, column = 1)
+        tk.Label(stt, text="Text Parsing", height=header_height, bg=GREEN, fg=WHITE, font=("Karla", 22, 'bold'), width = 33).grid(row = 1, column = 1)
+        tk.Label(stt, text="Below is the raw text heard by the STL software. An intelligent parsing algorithm will then search this text for useful terms.", bg=DARK_GREY_2, fg=WHITE, font=("Karla", 17), wraplength=400, pady = 15).grid(row = 2, column = 1)
+        self.current_text = tk.Text(stt, width = 32, height = 15, bg=DARK_GREY_2, highlightbackground = DARK_GREY, fg=DARKER_WHITE, highlightcolor = "#7BAEDC", wrap = tk.WORD, font=("Karla", 16), pady=5)
+        self.current_text.grid(row = 3, column = 1, padx = 1)
+        tk.Button(stt, text="Update Parsing", highlightbackground = DARK_GREY, command = self.refresh, font=("Karla", 18)).grid(row = 4, column = 1, pady = 10)
+        self.final_info = tk.Text(stt, width = 32, height = 10, bg=DARK_GREY_2, highlightbackground = DARK_GREY, fg=DARKER_WHITE, highlightcolor = "#7BAEDC", wrap = tk.WORD, font=("Karla", 16), pady=10, state='disabled')
+        self.final_info.grid(row = 5, column = 1, padx = 1)
+        
+        
+        view = tk.Frame(self.display, bg=DARK_GREY)
+        view.grid(row = 0, column = 2)
+        tk.Label(view, text="STL Synthesization", height=header_height, bg=BLUE, fg=WHITE, font=("Karla", 22, 'bold'), width = 33).grid(row = 1, column = 2)
+        tk.Label(view, text="Once the terms are found and organized, an STL file is generated by calling Fusion360 API methods.", bg=DARK_GREY, fg=WHITE, font=("Karla", 17), wraplength=400, pady = 15).grid(row = 2, column = 2)
         
         # The below code is a workaround that allows us to determine the window size in
         # pixels and then position the window wherever we want before drawing it.
-        self.root.withdraw()
-        self.root.update_idletasks()
+        self.display.withdraw()
+        self.display.update_idletasks()
         
-        self.root.deiconify()
-        self.root.mainloop()
-        
+        self.display.deiconify()
+        self.display.mainloop()
         
     def create_audio_dropdown(self, master):
         options = sr.Microphone.list_microphone_names()
@@ -80,7 +85,14 @@ class Application:
         new_text = self.record()
         self.set_text(new_text)
         objects = self.parser.text_to_objects(new_text)
-        #self.sysnthezied_info
+        for item in objects:
+            self.final_info.insert(1.0, str(item))
+    
+    def refresh(self):
+        text = self.current_text.get("1.0",'end-1c')
+        objects = self.parser.text_to_objects(text)
+        [print(str(elem)) for elem in objects]
+        [self.final_info.insert(1.0, str(elem)) for elem in objects]
         
     def record(self):
         print("Recording Audio from " + self.variable.get())
@@ -88,7 +100,7 @@ class Application:
         r=sr.Recognizer()
         index = sr.Microphone.list_microphone_names().index(self.variable.get())
         mic = sr.Microphone(device_index=index)
-        audio_file = sr.AudioFile('./Audio Inputs/cylinder_audio.wav')
+        audio_file = sr.AudioFile('./Audio Inputs/Cube5.wav')
         with audio_file as source:
             #r.adjust_for_ambient_noise(source, duration=3)
             # r.energy_threshold()

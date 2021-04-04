@@ -71,3 +71,6 @@ class PrimitiveObject3D:
         if property_name not in self.properties:
             raise Exception(f'{property_name} is not a property of {self.object_2d_name}')
         return self.properties[property_name]
+    
+    def get_prop_list(self):
+        return set(self.properties.keys())

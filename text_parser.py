@@ -26,16 +26,44 @@ class TextParser():
     def text_to_objects(self, raw_text): # returns a list of objects that were specificed by this text. Some objects may have missing arguments
         all_words = self._pre_process_text(raw_text)
         created_objects = []
-        object_in_progress = None
-        for word in all_words:
+        starting_index = [index for index, elem in enumerate(all_words) if elem in self.options][0]
+
+
+        object_in_progress = self.options[all_words[starting_index]]()
+        possible_properties = object_in_progress.get_prop_list()
+        loaded = False
+        property = None
+        value = None
+        for word in all_words[starting_index : ]:
+            if word in possible_properties:
+                property = word
+                if loaded:
+                    object_in_progress.set_prop(property, value)
+                    loaded = False
+                    property = None
+                    value = None
+                else:
+                    loaded = True
             try:
-                if object_in_progress is not None:
-                    object_in_progress.set_next_prop(int(word))
+                value = int(word)
+                if loaded:
+                    object_in_progress.set_prop(property, value)
+                    loaded = False
+                    property = None
+                    value = None
+                else:
+                    loaded = True
             except ValueError:
                 pass
+            
+            
             if word in self.options:
                 created_objects.append(object_in_progress)
                 object_in_progress = self.options[word]()
+                possible_properties = object_in_progress.get_prop_list()
+                loaded = False
+                property = None
+                value = None
         created_objects.append(object_in_progress)
         return [elem for elem in created_objects]
 
@@ -49,7 +77,7 @@ class TextParser():
 
 if __name__ == '__main__':
     text_parser = TextParser()
-    created_object_list = text_parser.text_to_objects('Make a sphere with 2 cm diameter and a cube with a side length of 3')
+    created_object_list = text_parser.text_to_objects('Make a sphere with 2 cm radius and a cube with a side_length of 3')
     created_object_list = created_object_list[1 : ] # remove the None that's at the front of the list
     [print(str(elem)) for elem in created_object_list]
 

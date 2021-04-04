@@ -53,3 +53,9 @@ Sources Cited:
 https://forums.autodesk.com/t5/fusion-360-api-and-scripts/simple-python-example-request/td-p/5428202
 https://github.com/brysontyrrell/Python-GUI-Example/blob/master/Python-GUI-Example.py 
 https://www.autodesk.com/autodesk-university/class/Getting-Started-Fusion-360-API-2020#handout
+
+
+TODO:
+    - Export STL from fusion
+    - Get STL viewer working in the GUI
+    - Polish GUI
