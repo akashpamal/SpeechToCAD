@@ -20,11 +20,18 @@ class Application:
         
         self.recording = False
         record = tk.Frame(self.root, bg=DARK_GREY, padx=1, height=30)
-        record.grid(row = 3, column = 1, pady = 1)
+        record.grid(row = 4, column = 1, pady = 1)
         title = tk.Label(record, text="Audio Recording", height=header_height, bg="#DC143C", fg=WHITE, width=30, font=("Karla", 18)).grid(row = 1)
+        
+        options = sr.Microphone.list_microphone_names()
+        self.variable = tk.StringVar(self.root)
+        self.variable.set(options[1]) # default value
+
+        w = tk.OptionMenu(record, self.variable, *options).grid(row = 3, pady = (5, 5))
+        
         self.mic = self.create_audio_dropdown(record)
-        self.record = tk.Button(record, text="Record", highlightbackground = DARK_GREY, command = self.Record, font=("Karla", 18)).grid(row = 3, pady = (5, 5))
-        self.exit = tk.Button(record, text="Exit", highlightbackground = DARK_GREY, command = self.Exit, font=("Karla", 18)).grid(row = 2, pady = (5, 5))
+        self.record = tk.Button(record, text="Record", highlightbackground = DARK_GREY, command = self.Record, font=("Karla", 18)).grid(row = 2, pady = (5, 5))
+        self.exit = tk.Button(record, text="Exit", highlightbackground = DARK_GREY, command = self.Exit, font=("Karla", 18)).grid(row = 4, pady = (5, 5))
         #Indicator GIFs
         #record.place(x = 1, y = 1, width=30, height=30)
         
@@ -53,8 +60,6 @@ class Application:
         
     def create_audio_dropdown(self, master):
         options = sr.Microphone.list_microphone_names()
-        print(options)
-
         variable = tk.StringVar(master)
         variable.set(options[0]) # default value
 
@@ -66,8 +71,21 @@ class Application:
         quit()
         
     def Record(self):
-        print("Recording Audio")
-        
+        print("Recording Audio from " + self.variable.get())
+        r=sr.Recognizer()
+        index = sr.Microphone.list_microphone_names().index(self.variable.get())
+        print(index)
+        mic = sr.Microphone(device_index=index)
+        with mic as source:
+            r.adjust_for_ambient_noise(source, duration=5)
+            # r.energy_threshold()
+            print("say anything : ")
+            audio= r.listen(source)
+            try:
+                text = r.recognize_google(audio)
+                print(text)
+            except:
+                print("sorry, could not recognise")
        
     def update(self, b = None):
         print(self.current_text.get("1.0",'end-1c'))

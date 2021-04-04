@@ -3,10 +3,9 @@ class Object3D:
     Abstract class that represents all 3d objects. These can be simple objects like Cubes and Spheres, or can be more complex objects that use a sketch and a length to extrude.
     """
 
-    def __init__(self):
-        self.object_type = None
-        self.properties = ['sketch', 'extrude_level']
-        self.properties = {elem : None for elem in self.properties}
+    def __init__(self, sketch, extrude_distance):
+        self.object_type = 'Extruded Sketch'
+        self.properties = {'sketch' : sketch, 'extrude_distance' : extrude_distance}
 
     def get_needed_properties(self):
         needed_properties = [elem for elem in self.properties if self.properties[elem] is None]
@@ -23,5 +22,8 @@ class Object3D:
         """
         Returns a string that can be used to create the object using the Fusion API. Implemented in each subclass.
         """
-        return 'The to_string_fusion method needs to be implemented in class:' + self.object_type
+        return_str = f"        extrudeDistance = adsk.core.ValueInput.createByReal({self.properties['extrude_distance']})\n        extrude = rootComp.features.extrudeFeatures.addSimple({sketch_surface}.profiles[-1], extrudeDistance, adsk.fusion.FeatureOperations.NewBodyFeatureOperation)"
+        return return_str
     
+    def set_prop(self, property_name, value):
+        self.properties[property_name] = value

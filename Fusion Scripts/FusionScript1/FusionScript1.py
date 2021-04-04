@@ -16,7 +16,6 @@ def run(context):
         sketch = rootComp.sketches.add(rootComp.xYConstructionPlane)
 
         rec1 = sketch.sketchCurves.sketchLines.addTwoPointRectangle(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create(5, 10, 0))
-        rec1 = sketch.sketchCurves.sketchLines.addTwoPointRectangle(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create(10, 20, 0))
         """
         # Draw a circle.
         circles = sketch.sketchCurves.sketchCircles

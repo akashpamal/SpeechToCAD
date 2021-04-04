@@ -27,5 +27,5 @@ class FusionScriptGenerator():
 
 fusion_script_generator = FusionScriptGenerator('./Fusion Scripts/FusionScript1/FusionScript1.py')
 fusion_script_generator.add_object(Rectangle(width=5, height=10))
-fusion_script_generator.add_object(Rectangle(width=10, height=20))
+# fusion_script_generator.add_object(Rectangle(width=10, height=20))
 fusion_script_generator.close_generator()

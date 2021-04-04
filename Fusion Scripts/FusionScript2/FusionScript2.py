@@ -28,11 +28,11 @@ def run(context):
         ui.messageBox(sketch.profiles.format(traceback.format_exc()))
         # print(sketch.profiles)
         
-        """
-        #rectangle extrusion
         extrudeDistance = adsk.core.ValueInput.createByReal(8)
-        #extrude = rootComp.features.extrudeFeatures.addSimple()
-        """
+        extrude = rootComp.features.extrudeFeatures.addSimple(
+           sketch.profiles[-1],
+           extrudeDistance,
+           adsk.fusion.FeatureOperations.NewBodyFeatureOperation)
 
     except:
         if ui:
