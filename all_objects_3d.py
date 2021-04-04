@@ -7,14 +7,21 @@ class Sphere(PrimitiveObject3D):
         super().__init__()
         self.object_type = 'sphere'
         self.properties.update({'radius' : radius})
+        self.alternative_properties.update({'diameter'})
 
     def set_prop(self, property_name, value):
+        if property_name in self.alternative_properties:
+            if property_name == 'diameter':
+                self.set_prop('radius', value / 2)
+                return
+        # function in the super class handles values that are in self.properties
         return super().set_prop(property_name, value)
 
     def to_string_fusion(self):
         circle = Circle(radius = self.get_prop('radius'))
         part1 = circle.to_string_fusion()
         part2 = """
+        # DRAWWING A SPHERE
         axisLine = sketch.sketchCurves.sketchLines.addByTwoPoints(adsk.core.Point3D.create(-1 * %d, 0, 0), adsk.core.Point3D.create(%d, 0, 0))
         revolves = rootComp.features.revolveFeatures
         revInput = revolves.createInput(sketch.profiles[-1], axisLine, adsk.fusion.FeatureOperations.NewComponentFeatureOperation)

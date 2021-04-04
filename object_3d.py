@@ -36,6 +36,7 @@ class PrimitiveObject3D:
     def __init__(self, sketch_profile='sketch.profiles[-1]', extrude_distance=None):
         self.object_type = 'Extruded Sketch'
         self.properties = {}
+        self.alternative_properties = set()
 
     def get_needed_properties(self):
         needed_properties = [elem for elem in self.properties if self.properties[elem] is None]
@@ -73,4 +74,4 @@ class PrimitiveObject3D:
         return self.properties[property_name]
     
     def get_prop_list(self):
-        return set(self.properties.keys())
+        return set(self.properties.keys()).union(self.alternative_properties)

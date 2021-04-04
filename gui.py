@@ -4,6 +4,7 @@ import speech_recognition as sr
 from text_parser import TextParser 
 from fusion_script_generator import FusionScriptGenerator
 import tkinter as tk
+import tkinter.filedialog
 
 WIDTH = 1400
 HEIGHT = 800
@@ -35,9 +36,12 @@ class Application:
         
         record = tk.Frame(self.display, bg=DARK_GREY)
         record.grid(row = 0, column = 0)
-        
         tk.Label(record, text="Audio Recording", height=header_height, bg=RED, fg=WHITE, font=("Karla", 22, 'bold'), width = 33).grid(row = 1, column = 0)
         tk.Label(record, text="Welcome to our fully automatic speach to STL file generator. To begin, please click on the record button and describe a simple shape for the system to generate!", bg=DARK_GREY, fg=WHITE, font=("Karla", 17), wraplength=400, pady = 15).grid(row = 2, column = 0)
+        
+        tk.Label(record, text="Open a .WAV filetype", height=header_height, bg=DARK_GREY_2, fg=WHITE, font=("Karla", 18, 'bold'), width = 25).grid(row = 3, column = 0)
+        filename = tk.filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("wav files","*.wav")))
+        print (filename)
         
         options = sr.Microphone.list_microphone_names()
         self.variable = tk.StringVar(self.display)
@@ -55,7 +59,7 @@ class Application:
         self.current_text = tk.Text(stt, width = 32, height = 15, bg=DARK_GREY_2, highlightbackground = DARK_GREY, fg=DARKER_WHITE, highlightcolor = "#7BAEDC", wrap = tk.WORD, font=("Karla", 16), pady=5)
         self.current_text.grid(row = 3, column = 1, padx = 1)
         tk.Button(stt, text="Update Parsing", highlightbackground = DARK_GREY, command = self.refresh, font=("Karla", 18)).grid(row = 4, column = 1, pady = 10)
-        self.final_info = tk.Text(stt, width = 32, height = 10, bg=DARK_GREY_2, highlightbackground = DARK_GREY, fg=DARKER_WHITE, highlightcolor = "#7BAEDC", wrap = tk.WORD, font=("Karla", 16), pady=10, state='disabled')
+        self.final_info = tk.Text(stt, width = 32, height = 10, bg=DARK_GREY_2, highlightbackground = DARK_GREY, fg=DARKER_WHITE, highlightcolor = "#7BAEDC", wrap = tk.WORD, font=("Karla", 16), pady=10)
         self.final_info.grid(row = 5, column = 1, padx = 1)
         
         
@@ -84,8 +88,13 @@ class Application:
         self.root.destroy()
         quit()
         
-    def refresh_info(self):
-        new_text = self.record()
+    def open_file(self):
+        filename = tk.filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = [("WAV files","*.wav")])
+        print (filename)
+        self.refresh_info(filename)
+        
+    def refresh_info(self, file = None):
+        new_text = self.record(file)
         self.set_text(new_text)
         created_object_list = self.parser.text_to_objects(new_text)
         # for item in objects:
