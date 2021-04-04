@@ -15,6 +15,11 @@ def run(context):
         # Create a new sketch on the xy plane.
 
         sketch = rootComp.sketches.add(rootComp.xYConstructionPlane)
+        rec1 = sketch.sketchCurves.sketchLines.addTwoPointRectangle(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create(4, 4, 0))
+        # DRAWING A CUBE
+        extrude = rootComp.features.extrudeFeatures.addSimple(sketch.profiles[-1], adsk.core.ValueInput.createByReal(4), adsk.fusion.FeatureOperations.NewBodyFeatureOperation)
+
+        sketch = rootComp.sketches.add(rootComp.xYConstructionPlane)
         circles = sketch.sketchCurves.sketchCircles.addByCenterRadius(adsk.core.Point3D.create(0, 0, 0), 2)
 
         axisLine = sketch.sketchCurves.sketchLines.addByTwoPoints(adsk.core.Point3D.create(-1 * 2, 0, 0), adsk.core.Point3D.create(2, 0, 0))
@@ -24,9 +29,9 @@ def run(context):
         ext = revolves.add(revInput)
         
         sketch = rootComp.sketches.add(rootComp.xYConstructionPlane)
-        rec1 = sketch.sketchCurves.sketchLines.addTwoPointRectangle(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create(3, 3, 0))
-        # DRAWING A CUBE
-        extrude = rootComp.features.extrudeFeatures.addSimple(sketch.profiles[-1], adsk.core.ValueInput.createByReal(3), adsk.fusion.FeatureOperations.NewBodyFeatureOperation)
+        circles = sketch.sketchCurves.sketchCircles.addByCenterRadius(adsk.core.Point3D.create(0, 0, 0), 3)
+        # DRAWING A CYLINDER
+        extrude = rootComp.features.extrudeFeatures.addSimple(sketch.profiles[-1], adsk.core.ValueInput.createByReal(4), adsk.fusion.FeatureOperations.NewBodyFeatureOperation)
 
         """
         Do not delete this section – it's used for parsing

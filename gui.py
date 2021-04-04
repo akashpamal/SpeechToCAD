@@ -2,10 +2,13 @@ import pyttsx3
 import speech_recognition as sr
 
 from text_parser import TextParser 
+from fusion_script_generator import FusionScriptGenerator
 import tkinter as tk
 
 WIDTH = 1400
 HEIGHT = 800
+
+FILE = './Audio Inputs/CubeSphereCylinder.wav'
 
 WHITE = "#FFFFFF"
 DARKER_WHITE = "#DDDDDD"
@@ -84,24 +87,38 @@ class Application:
     def refresh_info(self):
         new_text = self.record()
         self.set_text(new_text)
-        objects = self.parser.text_to_objects(new_text)
-        for item in objects:
-            self.final_info.insert(1.0, str(item))
+        created_object_list = self.parser.text_to_objects(new_text)
+        # for item in objects:
+        #     self.final_info.insert(1.0, str(item))
+        
+        fusion_script_generator = FusionScriptGenerator('./Fusion Scripts/FusionScript1/FusionScript1.py')
+    
+        for elem in created_object_list:
+            fusion_script_generator.add_object(elem)
+        
+        fusion_script_generator.close_generator()
     
     def refresh(self):
         text = self.current_text.get("1.0",'end-1c')
-        objects = self.parser.text_to_objects(text)
-        [print(str(elem)) for elem in objects]
-        [self.final_info.insert(1.0, str(elem)) for elem in objects]
+        created_object_list = self.parser.text_to_objects(text)
+        # [print(str(elem)) for elem in objects]
+        # [self.final_info.insert(1.0, str(elem)) for elem in objects]
+        fusion_script_generator = FusionScriptGenerator('./Fusion Scripts/FusionScript1/FusionScript1.py')
+    
+        for elem in created_object_list:
+            fusion_script_generator.add_object(elem)
         
-    def record(self):
+        fusion_script_generator.close_generator()
+        
+    def record(self, file = FILE):
         print("Recording Audio from " + self.variable.get())
         self.recording = True
         r=sr.Recognizer()
         index = sr.Microphone.list_microphone_names().index(self.variable.get())
-        mic = sr.Microphone(device_index=index)
-        audio_file = sr.AudioFile('./Audio Inputs/Cube5.wav')
-        with audio_file as source:
+        inputing = sr.Microphone(device_index=index)
+        if file != None:
+            inputing = sr.AudioFile(file)
+        with inputing as source:
             #r.adjust_for_ambient_noise(source, duration=3)
             # r.energy_threshold()
             print("say anything : ")
