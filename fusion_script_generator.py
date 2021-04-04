@@ -1,4 +1,6 @@
+from os import read
 from all_objects_2d import Rectangle
+from all_objects_3d import Cylinder, Cube, Sphere
 
 class FusionScriptGenerator():
     
@@ -24,8 +26,10 @@ class FusionScriptGenerator():
             target_file.write(self._closing_lines)
        
             
-
+print('running the script generator')
 fusion_script_generator = FusionScriptGenerator('./Fusion Scripts/FusionScript1/FusionScript1.py')
-fusion_script_generator.add_object(Rectangle(width=5, height=10))
+fusion_script_generator.add_object(Sphere(radius=2))
+fusion_script_generator.add_object(Cylinder(radius=1, height=20))
+fusion_script_generator.add_object(Cube(side_length=10))
 # fusion_script_generator.add_object(Rectangle(width=10, height=20))
 fusion_script_generator.close_generator()

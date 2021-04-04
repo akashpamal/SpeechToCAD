@@ -6,14 +6,13 @@ def run(context):
         app = adsk.core.Application.get()
         ui = app.userInterface
 
-        doc = app.documents.add(adsk.core.DocumentTypes.FusionDesignDocumentType)
+        # doc = app.documents.add(adsk.core.DocumentTypes.FusionDesignDocumentType)
         design = app.activeProduct
 
         # Get the root component of the active design.
         rootComp = design.rootComponent
 
         # Create a new sketch on the xy plane.
-        sketch = rootComp.sketches.add(rootComp.xYConstructionPlane)
 
         """
         # Draw a circle.

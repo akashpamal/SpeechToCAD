@@ -1,5 +1,5 @@
 import tkinter as tk
-#import pyttsx3
+import pyttsx3
 import speech_recognition as sr
 
 WHITE = "#FFFFFF"
@@ -30,8 +30,8 @@ class Application:
         w = tk.OptionMenu(record, self.variable, *options).grid(row = 3, pady = (5, 5))
         
         self.mic = self.create_audio_dropdown(record)
-        self.record = tk.Button(record, text="Record", highlightbackground = DARK_GREY, command = self.Record, font=("Karla", 18)).grid(row = 2, pady = (5, 5))
-        self.exit = tk.Button(record, text="Exit", highlightbackground = DARK_GREY, command = self.Exit, font=("Karla", 18)).grid(row = 4, pady = (5, 5))
+        self.record = tk.Button(record, text="Record", highlightbackground = DARK_GREY, command = self.record, font=("Karla", 18)).grid(row = 2, pady = (5, 5))
+        self.exit = tk.Button(record, text="Exit", highlightbackground = DARK_GREY, command = self.exit, font=("Karla", 18)).grid(row = 4, pady = (5, 5))
         #Indicator GIFs
         #record.place(x = 1, y = 1, width=30, height=30)
         
@@ -66,34 +66,40 @@ class Application:
         w = tk.OptionMenu(master, variable, *options)
         return variable
 
-    def Exit(self):
+    def exit(self):
         self.root.destroy()
         quit()
         
-    def Record(self):
+    def record(self):
         print("Recording Audio from " + self.variable.get())
+        self.recording = True
         r=sr.Recognizer()
         index = sr.Microphone.list_microphone_names().index(self.variable.get())
-        print(index)
         mic = sr.Microphone(device_index=index)
         with mic as source:
-            r.adjust_for_ambient_noise(source, duration=5)
+            r.adjust_for_ambient_noise(source, duration=3)
             # r.energy_threshold()
             print("say anything : ")
-            audio= r.listen(source)
+            audio = r.listen(source)
             try:
                 text = r.recognize_google(audio)
                 print(text)
+                self.recording = False
+                return text
             except:
-                print("sorry, could not recognise")
-       
+                print("sorry, could not recognize")
+                
+    def set_text(self, text):
+        #self.current_text.delete(1.0,"end")
+        self.current_text.insert(1.0, text)
+    
     def update(self, b = None):
         print(self.current_text.get("1.0",'end-1c'))
         
-    # def speak(self, text):
-    #     engine = pyttsx3.init()
-    #     engine.say(text) 
-    #     engine.runAndWait()
+    def speak(self, text):
+        engine = pyttsx3.init()
+        engine.say(text) 
+        engine.runAndWait()
 
 #SpeakText("hello bois we are really doing the NEHS in 2021 what a vieb yesoh esyes")
       

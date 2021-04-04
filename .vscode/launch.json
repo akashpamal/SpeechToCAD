@@ -8,8 +8,8 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            // "program": "./Source/gui.py",
-            "program": "${file}",
+            "program": "fusion_script_generator.py",
+            // "program": "${file}",
             "console": "integratedTerminal"
         }
     ]
