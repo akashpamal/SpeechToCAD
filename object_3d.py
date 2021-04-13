@@ -62,6 +62,7 @@ class PrimitiveObject3D:
         self.properties[property_name] = value
     
     def set_next_prop(self, value):
+        raise Exception('Invoked deprecated method')
         for key in self.properties:
             if self.properties[key] == None:
                 self.set_prop(key, value)

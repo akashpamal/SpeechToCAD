@@ -3,6 +3,8 @@ from all_objects_3d import *
 from object_2d import Object2D
 from object_3d import PrimitiveObject3D, ExtrudedObject3D
 from fusion_script_generator import FusionScriptGenerator
+import speech_recognition as sr
+import pyaudio
 # from nltk.tokenize import word_tokenize
 # from nltk.corpus import stopwords
 
@@ -27,7 +29,6 @@ class TextParser():
         all_words = self._pre_process_text(raw_text)
         created_objects = []
         starting_index = [index for index, elem in enumerate(all_words) if elem in self.options][0]
-
 
         object_in_progress = self.options[all_words[starting_index]]()
         possible_properties = object_in_progress.get_prop_list()
@@ -56,7 +57,6 @@ class TextParser():
             except ValueError:
                 pass
             
-            
             if word in self.options:
                 created_objects.append(object_in_progress)
                 object_in_progress = self.options[word]()
@@ -75,8 +75,20 @@ class TextParser():
         pre_processed_text = [elem.lower() for elem in pre_processed_text]
         return pre_processed_text
 
+    def continuous_listen(self): # TODO make this method asyncrhonous
+        init_rec = sr.Recognizer()
+        while True:
+            print("Let's speak!!")
+            with sr.Microphone() as source:
+                audio_data = init_rec.record(source, duration=5)
+                print("Recognizing your text.............")
+                text = init_rec.recognize_google(audio_data)
+                print(text)
+
 if __name__ == '__main__':
     text_parser = TextParser()
+    text_parser.continuous_listen()
+
     created_object_list = text_parser.text_to_objects('Make a cube with 20 cm side length')
     [print(str(elem)) for elem in created_object_list]
 
