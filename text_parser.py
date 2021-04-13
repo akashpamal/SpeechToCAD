@@ -81,15 +81,19 @@ class TextParser():
         while True:
             print("Let's speak!!")
             with sr.Microphone() as source:
-                audio_data = init_rec.record(source, duration=5)
+                audio_data = init_rec.record(source, duration=7)
                 print("Recognizing your text.............")
                 text = init_rec.recognize_google(audio_data)
                 print(text)
             added_objects = self.text_to_objects(text)
-            all_objects.append(added_objects)
+            all_objects.extend(added_objects)
 
-            print('Added objects:', added_objects)
+            print('Added objects:')
+            [print(str(elem)) for elem in added_objects]
+            print()
             print('All objects:', all_objects)
+            [print(str(elem)) for elem in all_objects]
+            print('\n' * 3)
 
 
 if __name__ == '__main__':
