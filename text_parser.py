@@ -77,6 +77,7 @@ class TextParser():
 
     def continuous_listen(self): # TODO make this method asyncrhonous
         init_rec = sr.Recognizer()
+        all_objects = []
         while True:
             print("Let's speak!!")
             with sr.Microphone() as source:
@@ -84,6 +85,12 @@ class TextParser():
                 print("Recognizing your text.............")
                 text = init_rec.recognize_google(audio_data)
                 print(text)
+            added_objects = self.text_to_objects(text)
+            all_objects.append(added_objects)
+
+            print('Added objects:', added_objects)
+            print('All objects:', all_objects)
+
 
 if __name__ == '__main__':
     text_parser = TextParser()

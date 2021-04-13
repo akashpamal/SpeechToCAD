@@ -10,5 +10,5 @@ with sr.Microphone() as source: # TODO check this offline
     print(text)
 
 """
-If the above script throws a "speech_recognition.UnknownValueError", run the script from the "Terminal" application on Mac, rather than the integrated terminal in VSCode.
+If the above script throws a "speech_recognition.UnknownValueError", run the script from the "Terminal" application on Mac, rather than the integrated terminal in VSCode. If you still get this error, make sure that your audio input device is able to capture audio.
 """
