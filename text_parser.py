@@ -81,7 +81,7 @@ class TextParser():
         while True:
             print("Let's speak!!")
             with sr.Microphone() as source:
-                audio_data = init_rec.record(source, duration=7)
+                audio_data = init_rec.record(source, duration=7) # TODO instead of using a timeout here, listen for a pause in speech
                 print("Recognizing your text.............")
                 text = init_rec.recognize_google(audio_data)
                 print(text)
