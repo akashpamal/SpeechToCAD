@@ -1,8 +1,16 @@
 import adsk.core, adsk.fusion, math, traceback
+import sys
+# It looks like calls to the Fusion API are handled on a separate thread or processor core since objects are created at the same time as console I/O activity
+# for i in range(10000):
+#     print(i)
+# sys.path.append(".") # Adds higher directory to python modules path.
+# from runner_gui import Application
+# import os
+# print(os.getcwd())
 
 def run(context):
     ui = None
-    try: 
+    try:
         app = adsk.core.Application.get()
         ui = app.userInterface
 
