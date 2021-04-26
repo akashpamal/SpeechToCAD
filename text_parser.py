@@ -95,6 +95,33 @@ class TextParser():
             [print(str(elem)) for elem in all_objects]
             print('\n' * 3)
 
+class SpeechToText():
+    def __init__(self) -> None:
+        recognizer = sr.Recognizer()
+        mic = sr.Microphone()
+        sr.Microphone.list_microphone_names()
+    
+    def listen(self, adjust_for_ambient_noise=True):
+        with self.mic as source:
+            if adjust_for_ambient_noise:
+                print('Adjusting for ambient noise...')
+                self.recognizer.adjust_for_ambient_noise(source)
+            print('Say something!')
+            audio =self. recognizer.listen(source)
+        
+        try:
+            print('Recognizing text...')
+            recognized_text = self.recognizer.recognize_google(audio)
+            print(recognized_text)
+        except sr.RequestError:
+            # API was unreachable or unresponsive
+            recognized_text = False
+            # response["error"] = "API unavailable"
+            print('API Unavailable')
+        except sr.UnknownValueError:
+            # speech was unintelligible
+            # response["error"] = "Unable to recognize speech"
+            print('Unable to recognize speech')
 
 if __name__ == '__main__':
     text_parser = TextParser()
