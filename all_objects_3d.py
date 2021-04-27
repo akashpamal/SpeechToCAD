@@ -8,7 +8,7 @@ class Sphere(PrimitiveObject3D):
         self.object_type = 'sphere'
         self.object_properties.update({'radius' : radius})
         self.old_alternative_properties.update({'diameter'})
-        self.alternative_properties.extend({
+        self.alternative_properties.update({
             "diameter" : ('radius', lambda x : x/2)
         })
 
@@ -16,7 +16,7 @@ class Sphere(PrimitiveObject3D):
         circle = Circle(radius = self.get_prop('radius'))
         part1 = circle.to_string_fusion()
         part2 = """
-        # DRAWWING A SPHERE
+        # DRAWING A SPHERE
         axisLine = sketch.sketchCurves.sketchLines.addByTwoPoints(adsk.core.Point3D.create(-1 * %d, 0, 0), adsk.core.Point3D.create(%d, 0, 0))
         revolves = rootComp.features.revolveFeatures
         revInput = revolves.createInput(sketch.profiles[-1], axisLine, adsk.fusion.FeatureOperations.NewComponentFeatureOperation)
@@ -33,7 +33,7 @@ class Cylinder(PrimitiveObject3D):
         self.object_type = 'cylinder'
         self.object_properties.update({'radius' : radius, 'height' : height, 'sketch_plane' : 'rootComp.xYConstructionPlane'}) # TODO delete sketch_plane from this dictionary and use self.sketch_plane instead
         self.old_alternative_properties.update({'diameter'})
-        self.alternative_properties.extend({
+        self.alternative_properties.update({
             "diameter" : ('radius', lambda x : x/2)
         })
 
@@ -52,6 +52,9 @@ class Cube(PrimitiveObject3D):
         self.object_type = 'cube'
         self.object_properties.update({'side_length' : side_length})
         self.old_alternative_properties.update({'length'})
+        self.alternative_properties.update({
+            'length' : ('side_length', lambda x : x)
+        })
 
     def to_string_fusion(self):
         square = Square(side_length=self.get_prop('side_length'))

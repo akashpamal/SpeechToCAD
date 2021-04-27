@@ -28,7 +28,6 @@ class TextParser():
         self.options = temp_new_dict
     
     def text_to_objects(self, raw_text): # returns a list of objects that were specificed by this text. Some objects may have missing arguments
-        print('Beginning text_to_objects method in TextParser')
         all_words = self._pre_process_text(raw_text)
         created_objects = []
         starting_index = [index for index, elem in enumerate(all_words) if elem in self.options][0]
@@ -37,7 +36,7 @@ class TextParser():
         possible_properties = object_in_progress.get_prop_list()
         loaded = False
         property = None
-        value = None
+        value = None # TODO add support for a case when the user says two properties that mean the same thing, then a single value. e.g. Side length of 5. side and length may both be properties, but this should be handled smoothly
         for word in all_words[starting_index : ]:
             if word in possible_properties:
                 property = word
@@ -75,7 +74,8 @@ class TextParser():
         # TODO add lemmatization
         # pre_processed_text = word_tokenize(raw_text)
         pre_processed_text = raw_text.split()
-        pre_processed_text = [elem.lower() for elem in pre_processed_text]
+        pre_processed_text = [elem.lower().replace('.', '') for elem in pre_processed_text]
+
         return pre_processed_text
 
     @deprecation.deprecated(details="This functionality has been moved to the SpeechParser class")
@@ -157,10 +157,15 @@ def main1():
     
     fusion_script_generator.close_generator()
 
-def main2():
+def main2_full_test():
     text_parser = TextParser()
     speech_parser = SpeechParser()
     speech_parser.continuous_listen(text_parser.text_to_objects)
 
+def main2_text_parser_test():
+    text_parser = TextParser()
+    all_objects = text_parser.text_to_objects('Make me a cube with side length 5. Also generate a cylinder with diameter 10 and a height of 13. An additional sphere should have a radius of 5')
+    [print(elem) for elem in all_objects]
+
 if __name__ == '__main__':
-    main2()
+    main2_text_parser_test()
