@@ -168,4 +168,4 @@ def main2_text_parser_test():
     [print(elem) for elem in all_objects]
 
 if __name__ == '__main__':
-    main2_text_parser_test()
+    main2_full_test()
