@@ -34,19 +34,21 @@ class PrimitiveObject3D:
     """
 
     def __init__(self, sketch_profile='sketch.profiles[-1]', extrude_distance=None):
-        self.object_type = 'Extruded Sketch'
-        self.properties = {}
-        self.alternative_properties = set()
+        self.object_type = 'Primitive Object3D'
+        self.object_properties = {}
+        self.sketch_plane = 'rootComp.xYConstructionPlane'
+        self.old_alternative_properties = set()
+        self.alternative_properties = {} # key is the alternative property, value is a tuple of (object_property, adjustment_function) where object_property is the corresponding object property and adjustment_function is a function that accepts alternative_property and returns the correct value for the object_property
 
     def get_needed_properties(self):
-        needed_properties = [elem for elem in self.properties if self.properties[elem] is None]
+        needed_properties = [elem for elem in self.object_properties if self.object_properties[elem] is None]
         return needed_properties # list of strings
     
     def is_complete(self):
         return len(self.get_needed_properties()) == 0
     
     def __str__(self) -> str:
-        return_string = self.object_type[0].upper() + self.object_type[1 : ].lower() + ' || ' + ', '.join([elem[0] + ': ' + str(elem[1]) for elem in self.properties.items()])
+        return_string = self.object_type[0].upper() + self.object_type[1 : ].lower() + ' || ' + ', '.join([elem[0] + ': ' + str(elem[1]) for elem in self.object_properties.items()])
         return return_string
 
     def to_string_fusion(self):
@@ -57,9 +59,14 @@ class PrimitiveObject3D:
         return return_str
     
     def set_prop(self, property_name, value):
-        if property_name not in self.properties:
-            raise Exception(f'{property_name} is not a property of {self.object_2d_name}')
-        self.properties[property_name] = value
+        if property_name in self.object_properties:
+            self.object_properties[property_name] = value
+            return True
+        if property_name in self.alternative_properties:
+            object_property, adjustment_function = self.alternative_properties[property_name]
+            self.object_properties[object_property] = adjustment_function(value)
+            return True
+        raise Exception(f"{property_name} is not a property of {self.object_type}") # this method was given an invalid property name, probably by the TextParser class
     
     def set_next_prop(self, value):
         raise Exception('Invoked deprecated method')
@@ -70,9 +77,9 @@ class PrimitiveObject3D:
         raise Exception(f'Attempted to add more properties than {self.object_type} has.')
     
     def get_prop(self, property_name):
-        if property_name not in self.properties:
+        if property_name not in self.object_properties:
             raise Exception(f'{property_name} is not a property of {self.object_2d_name}')
-        return self.properties[property_name]
+        return self.object_properties[property_name]
     
     def get_prop_list(self):
-        return set(self.properties.keys()).union(self.alternative_properties)
+        return set(self.object_properties.keys()).union(self.old_alternative_properties)
