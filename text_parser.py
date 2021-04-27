@@ -5,6 +5,7 @@ from object_3d import PrimitiveObject3D, ExtrudedObject3D
 from fusion_script_generator import FusionScriptGenerator
 import speech_recognition as sr
 import pyaudio
+import deprecation
 # from nltk.tokenize import word_tokenize
 # from nltk.corpus import stopwords
 
@@ -17,6 +18,7 @@ class TextParser():
             Cylinder : ('cylinder', 'barrel'),
         }
 
+        # reverse the dictinonary so the key is the keyword and the value is the corresponding Object3d
         temp_new_dict = {}
         for key, value_tuple in self.options.items():
             for value in value_tuple:
@@ -26,6 +28,7 @@ class TextParser():
         self.options = temp_new_dict
     
     def text_to_objects(self, raw_text): # returns a list of objects that were specificed by this text. Some objects may have missing arguments
+        print('Beginning text_to_objects method in TextParser')
         all_words = self._pre_process_text(raw_text)
         created_objects = []
         starting_index = [index for index, elem in enumerate(all_words) if elem in self.options][0]
@@ -75,6 +78,7 @@ class TextParser():
         pre_processed_text = [elem.lower() for elem in pre_processed_text]
         return pre_processed_text
 
+    @deprecation.deprecated(details="This functionality has been moved to the SpeechParser class")
     def continuous_listen(self): # TODO make this method asyncrhonous
         init_rec = sr.Recognizer()
         all_objects = []
@@ -95,35 +99,51 @@ class TextParser():
             [print(str(elem)) for elem in all_objects]
             print('\n' * 3)
 
-class SpeechToText():
+class SpeechParser():
     def __init__(self) -> None:
-        recognizer = sr.Recognizer()
-        mic = sr.Microphone()
-        sr.Microphone.list_microphone_names()
+        self.recognizer = sr.Recognizer()
+        self.mic = sr.Microphone()
+        # sr.Microphone.list_microphone_names()
     
-    def listen(self, adjust_for_ambient_noise=True):
+    def listen_once(self, adjust_for_ambient_noise=True, return_detailed_response=False):
         with self.mic as source:
             if adjust_for_ambient_noise:
                 print('Adjusting for ambient noise...')
                 self.recognizer.adjust_for_ambient_noise(source)
             print('Say something!')
             audio =self. recognizer.listen(source)
-        
+            print('Finished listening')
+        response = {"error" : None, "transcription" : None}
+
         try:
             print('Recognizing text...')
-            recognized_text = self.recognizer.recognize_google(audio)
-            print(recognized_text)
+            transcription = self.recognizer.recognize_google(audio)
+            print(transcription)
+            response["transcription"] = transcription
         except sr.RequestError:
             # API was unreachable or unresponsive
-            recognized_text = False
-            # response["error"] = "API unavailable"
-            print('API Unavailable')
+            response["error"] = "API Unavailable"
         except sr.UnknownValueError:
-            # speech was unintelligible
-            # response["error"] = "Unable to recognize speech"
-            print('Unable to recognize speech')
+            # speech was unintelligible. This may be due to an audio source that doesn't have any input
+            response["error"] = "Unable to recognize speech"
+        
+        if return_detailed_response:
+            return response
+        else:
+            return response["transcription"]
+    
+    def continuous_listen(self, callback_function, stop_condition=lambda : False): # TODO add a stop_condition function
+        while not stop_condition():
+            transcription = self.listen_once()
+            if transcription is None:
+                print("We didn't hear anything that time, try again")
+            else:
+                print('Calling callback function from continuous_listen in SpeechParser')
+                created_objects = callback_function(transcription)
+                print('Newly created objects:')
+                [print(elem) for elem in created_objects]
 
-if __name__ == '__main__':
+def main1():
     text_parser = TextParser()
     text_parser.continuous_listen()
 
@@ -136,3 +156,11 @@ if __name__ == '__main__':
         fusion_script_generator.add_object(elem)
     
     fusion_script_generator.close_generator()
+
+def main2():
+    text_parser = TextParser()
+    speech_parser = SpeechParser()
+    speech_parser.continuous_listen(text_parser.text_to_objects)
+
+if __name__ == '__main__':
+    main2()
