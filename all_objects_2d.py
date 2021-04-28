@@ -7,7 +7,8 @@ class Rectangle(Object2D):
         self.properties.update({'width' : width, 'height' : height})
     
     def to_string_fusion(self):
-        return_string = f"sketch = rootComp.sketches.add({self.get_prop('sketch_plane')})\n        rec1 = sketch.sketchCurves.sketchLines.addTwoPointRectangle(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create({self.get_prop('width')}, {self.get_prop('height')}, 0))\n"
+        return_string = super().to_string_fusion()
+        return_string += f"        rec1 = sketch.sketchCurves.sketchLines.addTwoPointRectangle(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create({self.get_prop('width')}, {self.get_prop('height')}, 0))\n"
         return return_string
     
 class Square(Object2D):
@@ -17,7 +18,8 @@ class Square(Object2D):
         self.properties.update({'side_length' : side_length})
 
     def to_string_fusion(self):
-        return_string = f"sketch = rootComp.sketches.add({self.get_prop('sketch_plane')})\n        rec1 = sketch.sketchCurves.sketchLines.addTwoPointRectangle(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create({self.get_prop('side_length')}, {self.get_prop('side_length')}, 0))\n"
+        return_string = super().to_string_fusion()
+        return_string += f"        rec1 = sketch.sketchCurves.sketchLines.addTwoPointRectangle(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create({self.get_prop('side_length')}, {self.get_prop('side_length')}, 0))\n"
         return return_string
     
 class Circle(Object2D):
@@ -26,6 +28,7 @@ class Circle(Object2D):
         self.object_type = 'Circle'
         self.properties.update({'radius' : radius})
     
-    def to_string_fusion(self): # remove this default eventually
-        return_string = f"sketch = rootComp.sketches.add({self.get_prop('sketch_plane')})\n        circles = sketch.sketchCurves.sketchCircles.addByCenterRadius(adsk.core.Point3D.create(0, 0, 0), {self.get_prop('radius')})\n"
+    def to_string_fusion(self):
+        return_string = super().to_string_fusion()
+        return_string += f"        circles = sketch.sketchCurves.sketchCircles.addByCenterRadius(adsk.core.Point3D.create(0, 0, 0), {self.get_prop('radius')})\n"
         return return_string

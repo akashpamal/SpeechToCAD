@@ -2,7 +2,8 @@ class Object2D:
 
     def __init__(self) -> None:
         self.object_type = None
-        self.properties = {'sketch_plane' : 'rootComp.xYConstructionPlane'}
+        self.sketch_plane = 'rootComp.xYConstructionPlane'
+        self.properties = {}
     
     def get_needed_properties(self):
         needed_properties = [elem for elem in self.properties if self.properties[elem] is None]
@@ -23,7 +24,7 @@ class Object2D:
         """
         Returns a string that can be used to create the object using the Fusion API. Implemented in each subclass.
         """
-        return 'The to_string_fusion method needs to be implemented in class:' + self.object_type # TODO change this to create a new sketch on the surface specified
+        return f'sketch = rootComp.sketches.add({self.sketch_plane})\n'
     
     def set_prop(self, property_name, value):
         if property_name not in self.properties:

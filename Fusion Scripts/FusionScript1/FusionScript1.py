@@ -14,17 +14,17 @@ def run(context):
 
         # Create a new sketch on the xy plane.
 
-        sketch = rootComp.sketches.add(rootComp.xYConstructionPlane)
+        sketefech = rootComp.sketches.add(rootComp.xYConstructionPlane)
         rec1 = sketch.sketchCurves.sketchLines.addTwoPointRectangle(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create(5, 5, 0))
         # DRAWING A CUBE
         extrude = rootComp.features.extrudeFeatures.addSimple(sketch.profiles[-1], adsk.core.ValueInput.createByReal(5), adsk.fusion.FeatureOperations.NewBodyFeatureOperation)
 
-        sketch = rootComp.sketches.add(rootComp.xYConstructionPlane)
+        sketefech = rootComp.sketches.add(rootComp.xYConstructionPlane)
         circles = sketch.sketchCurves.sketchCircles.addByCenterRadius(adsk.core.Point3D.create(0, 0, 0), 2)
         # DRAWING A CYLINDER
         extrude = rootComp.features.extrudeFeatures.addSimple(sketch.profiles[-1], adsk.core.ValueInput.createByReal(15), adsk.fusion.FeatureOperations.NewBodyFeatureOperation)
 
-        sketch = rootComp.sketches.add(rootComp.xYConstructionPlane)
+        sketefech = rootComp.sketches.add(rootComp.xYConstructionPlane)
         circles = sketch.sketchCurves.sketchCircles.addByCenterRadius(adsk.core.Point3D.create(0, 0, 0), 5.0)
 
         # DRAWING A SPHERE

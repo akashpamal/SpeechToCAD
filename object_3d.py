@@ -6,7 +6,7 @@ class PrimitiveObject3D:
     def __init__(self, sketch_profile='sketch.profiles[-1]', extrude_distance=None):
         self.object_type = 'Primitive Object3D'
         self.object_properties = {}
-        self.sketch_plane = 'rootComp.xYConstructionPlane'
+        self.sketch_profiles = [] # TODO use this to tie 3D objects to their 2D base
         self.alternative_properties = {} # key is the alternative property, value is a tuple of (object_property, adjustment_function) where object_property is the corresponding object property and adjustment_function is a function that accepts alternative_property and returns the correct value for the object_property
 
     def get_needed_properties(self):
