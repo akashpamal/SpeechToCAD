@@ -23,7 +23,7 @@ class Object2D:
         """
         Returns a string that can be used to create the object using the Fusion API. Implemented in each subclass.
         """
-        return 'The to_string_fusion method needs to be implemented in class:' + self.object_type
+        return 'The to_string_fusion method needs to be implemented in class:' + self.object_type # TODO change this to create a new sketch on the surface specified
     
     def set_prop(self, property_name, value):
         if property_name not in self.properties:

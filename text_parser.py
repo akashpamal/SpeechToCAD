@@ -6,6 +6,7 @@ from fusion_script_generator import FusionScriptGenerator
 import speech_recognition as sr
 import pyaudio
 import deprecation
+from fusion_script_generator import FusionScriptGenerator
 # from nltk.tokenize import word_tokenize
 # from nltk.corpus import stopwords
 
@@ -167,5 +168,17 @@ def main2_text_parser_test():
     all_objects = text_parser.text_to_objects('Make me a cube with side length 5. Also generate a cylinder with diameter 10 and a height of 13. An additional sphere should have a radius of 5')
     [print(elem) for elem in all_objects]
 
+def main2_with_script_generator_test():
+    text_parser = TextParser()
+    speech_parser = SpeechParser()
+    fusion_script_generator = FusionScriptGenerator('./Fusion Scripts/FusionScript1/FusionScript1.py')
+    # text = speech_parser.listen_once()
+    text = "Make me a cube with side length 5. Also make me a cylinder with radius 2 and height 15. Finally, make me a sphere with a diameter of 10."
+    object_list = text_parser.text_to_objects(text)
+    [print(elem) for elem in object_list]
+    [fusion_script_generator.add_object(elem) for elem in object_list]
+    fusion_script_generator.close_generator()
+
+
 if __name__ == '__main__':
-    main2_full_test()
+    main2_with_script_generator_test()

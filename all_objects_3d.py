@@ -7,12 +7,12 @@ class Sphere(PrimitiveObject3D):
         super().__init__()
         self.object_type = 'sphere'
         self.object_properties.update({'radius' : radius})
-        self.old_alternative_properties.update({'diameter'})
         self.alternative_properties.update({
             "diameter" : ('radius', lambda x : x/2)
         })
 
     def to_string_fusion(self):
+        part0 = super().to_string_fusion()
         circle = Circle(radius = self.get_prop('radius'))
         part1 = circle.to_string_fusion()
         part2 = """
@@ -24,7 +24,7 @@ class Sphere(PrimitiveObject3D):
         ext = revolves.add(revInput)
         """ % (self.get_prop('radius'), self.get_prop('radius'))
         
-        return part1 + part2
+        return part0 + part1 + part2
     
 class Cylinder(PrimitiveObject3D):
     
@@ -32,18 +32,18 @@ class Cylinder(PrimitiveObject3D):
         super().__init__()
         self.object_type = 'cylinder'
         self.object_properties.update({'radius' : radius, 'height' : height, 'sketch_plane' : 'rootComp.xYConstructionPlane'}) # TODO delete sketch_plane from this dictionary and use self.sketch_plane instead
-        self.old_alternative_properties.update({'diameter'})
         self.alternative_properties.update({
             "diameter" : ('radius', lambda x : x/2)
         })
 
     def to_string_fusion(self):
         # Make a new circle with radius "radius"
+        part0 = super().to_string_fusion()
         circle = Circle(radius = self.get_prop('radius'))
         part1 = circle.to_string_fusion()
         # Extrude the circle by height "height"
         part2 = f"# DRAWING A CYLINDER\n        extrude = rootComp.features.extrudeFeatures.addSimple(sketch.profiles[-1], adsk.core.ValueInput.createByReal({self.get_prop('height')}), adsk.fusion.FeatureOperations.NewBodyFeatureOperation)\n"
-        return part1 +  "        " + part2    
+        return part0 + part1 +  "        " + part2    
 
 class Cube(PrimitiveObject3D):
     
@@ -51,15 +51,15 @@ class Cube(PrimitiveObject3D):
         super().__init__()
         self.object_type = 'cube'
         self.object_properties.update({'side_length' : side_length})
-        self.old_alternative_properties.update({'length'})
         self.alternative_properties.update({
             'length' : ('side_length', lambda x : x)
         })
 
     def to_string_fusion(self):
+        part0 = super().to_string_fusion()
         square = Square(side_length=self.get_prop('side_length'))
         # square.set_prop('sketch_profile' : )
         part1 = square.to_string_fusion()
         # Extrude the circle by height "height"
         part2 = f"# DRAWING A CUBE\n        extrude = rootComp.features.extrudeFeatures.addSimple(sketch.profiles[-1], adsk.core.ValueInput.createByReal({self.get_prop('side_length')}), adsk.fusion.FeatureOperations.NewBodyFeatureOperation)\n"
-        return part1 +  "        " + part2
+        return part0 + part1 +  "        " + part2
