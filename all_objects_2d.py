@@ -10,7 +10,7 @@ class Rectangle(Object2D):
         return_string = super().to_string_fusion()
         return_string += f"        rec1 = sketch.sketchCurves.sketchLines.addTwoPointRectangle(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create({self.get_prop('width')}, {self.get_prop('height')}, 0))\n"
         return return_string
-    
+
 class Square(Object2D):
     def __init__(self, side_length=None):
         super().__init__()
