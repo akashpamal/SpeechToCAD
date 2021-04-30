@@ -40,6 +40,7 @@ def run(context):
 
                 if normal.angleTo(upDir) < 0.001:
                     sketch = rootComp.sketches.add(face)
+                    break
         
         circles = sketch.sketchCurves.sketchCircles.addByCenterRadius(adsk.core.Point3D.create(10, 10, 0), 5)
         cylinder = extrude.addSimple(sketch.profiles[-1], adsk.core.ValueInput.createByReal(15), adsk.fusion.FeatureOperations.NewBodyFeatureOperation)
